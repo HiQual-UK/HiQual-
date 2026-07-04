@@ -3,69 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Certificate Verification | HiQual</title>
+<title>Certificate Verification | HiQual UK</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
+  :root {
+    --hq-blue: #1d4ed8;
+    --hq-blue-dark: #142c6e;
+    --hq-green: #15803d;
+    --hq-red: #b91c1c;
+    --paper: #ffffff;
+    --bg: #eef1f7;
+    --ink: #1f2430;
+    --muted: #6b7280;
+  }
+
+  * { box-sizing: border-box; }
+
   body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f6f9;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    background: var(--bg);
     margin: 0;
-    padding: 40px 20px;
-    color: #222;
+    padding: 30px 16px 60px;
+    color: var(--ink);
   }
-  .container {
-    max-width: 600px;
+
+  .page {
+    max-width: 640px;
     margin: 0 auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    position: relative;
   }
-  h1 {
+
+  /* Small corner logo */
+  .corner-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 34px;
+  }
+
+  /* Header with crest */
+  .header {
     text-align: center;
-    font-size: 22px;
-    margin-bottom: 25px;
+    padding: 10px 0 20px;
   }
+  .crest-logo {
+    height: 130px;
+    width: auto;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  .header h1 {
+    font-size: 22px;
+    margin: 14px 0 2px;
+    color: var(--hq-blue-dark);
+    letter-spacing: 0.3px;
+  }
+  .header p.subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+
+  .card {
+    background: var(--paper);
+    padding: 30px 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(20, 44, 110, 0.08);
+  }
+
   .input-row {
     display: flex;
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
   }
   #certInput {
     flex: 1;
-    padding: 12px;
-    border: 1px solid #ccc;
+    padding: 12px 14px;
+    border: 1px solid #d0d5e0;
     border-radius: 6px;
     font-size: 15px;
   }
+  #certInput:focus { outline: 2px solid var(--hq-blue); outline-offset: 1px; }
   #verifyBtn {
-    padding: 12px 20px;
-    background: #1d4ed8;
+    padding: 12px 22px;
+    background: var(--hq-blue);
     color: #fff;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 15px;
+    font-weight: 600;
   }
-  #verifyBtn:hover { background: #1741b0; }
-  #verifyBtn:disabled { background: #93a5d1; cursor: not-allowed; }
+  #verifyBtn:hover { background: var(--hq-blue-dark); }
+  #verifyBtn:disabled { background: #9db1e8; cursor: not-allowed; }
 
   #resultEmpty, #resultNotFound {
     text-align: center;
-    color: #777;
+    color: var(--muted);
     padding: 20px 0;
   }
-  #resultNotFound { color: #b91c1c; }
+  #resultNotFound { color: var(--hq-red); }
 
   #resultFound { display: none; }
-  .detail-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
+
+  .thankyou-note {
+    background: #eff4ff;
+    border-left: 4px solid var(--hq-blue);
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #1e293b;
+    margin-bottom: 20px;
   }
-  .detail-label { color: #666; }
-  .detail-value { font-weight: 600; }
 
   .status-badge {
     display: inline-flex;
@@ -77,58 +126,115 @@
     font-size: 14px;
     margin-bottom: 15px;
   }
-  .status-valid { background: #dcfce7; color: #15803d; }
-  .status-expired { background: #fee2e2; color: #b91c1c; }
+  .status-valid { background: #dcfce7; color: var(--hq-green); }
+  .status-expired { background: #fee2e2; color: var(--hq-red); }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eef0f4;
+    font-size: 14.5px;
+  }
+  .detail-label { color: var(--muted); }
+  .detail-value { font-weight: 600; text-align: right; }
+
+  .stamp-wrap {
+    text-align: center;
+    margin: 26px 0 16px;
+  }
+  .verified-stamp {
+    width: 90px;
+    height: auto;
+  }
+
+  .hereby-note {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #374151;
+    text-align: center;
+    border-top: 1px dashed #d7dce6;
+    padding-top: 16px;
+  }
+
+  footer.page-footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 20px;
+  }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>Certificate Verification</h1>
+<div class="page">
+  <img src="hiqual-logo.png" alt="HiQual" class="corner-logo">
 
-  <div class="input-row">
-    <input type="text" id="certInput" placeholder="Enter Certificate Number (e.g. HQ-2026-00123)">
-    <button id="verifyBtn">Verify</button>
+  <div class="header">
+    <img src="hiqual-crest.jpg" alt="HiQual UK Crest" class="crest-logo">
+    <h1>Certificate Verification</h1>
+    <p class="subtitle">Official verification portal for HiQual UK certificates</p>
   </div>
 
-  <div id="resultEmpty">Enter a certificate number above to verify.</div>
+  <div class="card">
+    <div class="input-row">
+      <input type="text" id="certInput" placeholder="Enter Certificate Number (e.g. UD65362)">
+      <button id="verifyBtn">Verify</button>
+    </div>
 
-  <div id="resultNotFound" style="display:none;">
-    <i class="fa-solid fa-circle-xmark"></i> No certificate found with this number.
+    <div id="resultEmpty">Enter a certificate number above to verify.</div>
+
+    <div id="resultNotFound" style="display:none;">
+      <i class="fa-solid fa-circle-xmark"></i> No certificate found with this number.
+    </div>
+
+    <div id="resultFound">
+
+      <div class="thankyou-note">
+        Thank you for using the HiQual verification service. Please find the certificate details confirmed below.
+      </div>
+
+      <div id="statusBadge" class="status-badge"></div>
+
+      <div class="detail-row">
+        <span class="detail-label">Student Name</span>
+        <span class="detail-value" id="valName"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Father Name</span>
+        <span class="detail-value" id="valFather"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Course</span>
+        <span class="detail-value" id="valCourse"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Certificate No.</span>
+        <span class="detail-value" id="valCertNo"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Issue Date</span>
+        <span class="detail-value" id="valIssue"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Date of Birth</span>
+        <span class="detail-value" id="valDob"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Instructor</span>
+        <span class="detail-value" id="valInstructor"></span>
+      </div>
+
+      <div class="stamp-wrap">
+        <img src="verified-stamp.png" alt="Verified" class="verified-stamp">
+      </div>
+
+      <div class="hereby-note" id="herebyNote"></div>
+
+    </div>
   </div>
 
-  <div id="resultFound">
-    <div id="statusBadge" class="status-badge"></div>
-
-    <div class="detail-row">
-      <span class="detail-label">Student Name</span>
-      <span class="detail-value" id="valName"></span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Father Name</span>
-      <span class="detail-value" id="valFather"></span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Course</span>
-      <span class="detail-value" id="valCourse"></span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Certificate No.</span>
-      <span class="detail-value" id="valCertNo"></span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Issue Date</span>
-      <span class="detail-value" id="valIssue"></span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Date of Birth</span>
-      <span class="detail-value" id="valDob"></span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Instructor</span>
-      <span class="detail-value" id="valInstructor"></span>
-    </div>
-  </div>
+  <footer class="page-footer">&copy; HiQual UK — Certificate Verification Portal</footer>
 </div>
 
 <script src="certificate.js"></script>
