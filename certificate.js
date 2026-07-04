@@ -52,13 +52,24 @@ function showFound(cert) {
   document.getElementById('valInstructor').textContent = cert.instructor;
 
   const badge = document.getElementById('statusBadge');
-  if (cert.status === "Valid") {
+  const statusUpper = (cert.status || "").trim().toUpperCase();
+  if (statusUpper === "VALID" || statusUpper === "PASS") {
     badge.className = "status-badge status-valid";
     badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> Valid';
   } else {
     badge.className = "status-badge status-expired";
     badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Expired';
   }
+
+  // Build the official "We hereby verify..." paragraph dynamically
+  // using this student's real name, course and issue date.
+  const herebyText =
+    'We hereby verify that the information provided above is accurate and ' +
+    'corresponds to the certificate issued by HiQual UK to ' + cert.name +
+    ' on ' + formatDate(cert.issueDate) + '. ' + cert.name +
+    ' has successfully completed the "' + cert.course + '" course as indicated.';
+
+  document.getElementById('herebyNote').textContent = herebyText;
 }
 
 const verifyBtn = document.getElementById('verifyBtn');
